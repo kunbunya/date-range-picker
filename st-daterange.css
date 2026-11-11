@@ -1,0 +1,264 @@
+/*!
+ * STDateRange v1.0.0 — styles
+ * เปลี่ยนสีได้ด้วย CSS variables ด้านล่าง (ตั้งที่ .stdr หรือ selector ของคุณเอง)
+ */
+.stdr {
+    --stdr-primary: #2f6fed;
+    --stdr-primary-dark: #1e4fbd;
+    --stdr-range-bg: #dce8fd;
+    --stdr-chip-bg: #eaf1ff;
+    --stdr-hover-bg: #eef3fb;
+    --stdr-border: #e2e6ec;
+    --stdr-muted: #8a93a3;
+    --stdr-text: #2b2f38;
+    --stdr-danger: #dc3545;
+    --stdr-panel-width: auto;
+    --stdr-z: 1060;
+    position: relative;
+}
+
+.stdr *, .stdr *::before, .stdr *::after { box-sizing: border-box; }
+
+/* ---------- ช่องแสดงช่วงวันที่ ---------- */
+.stdr-input {
+    position: relative;
+    cursor: pointer;
+    background-color: #fff;
+    padding-right: 2.5rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+}
+
+/* ไม่มี Bootstrap → ใช้หน้าตาพื้นฐานนี้แทน */
+.stdr-input:not(.form-control) {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--stdr-text);
+    border: 1px solid #ced4da;
+    border-radius: .375rem;
+}
+
+.stdr-input:not(.form-control):focus-visible {
+    outline: 0;
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+}
+
+.stdr-text:empty::before { content: "\00a0"; }
+
+.stdr-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--stdr-muted);
+    display: inline-flex;
+    pointer-events: none;
+}
+
+/* ---------- กล่องปฏิทิน ---------- */
+.stdr-panel {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: var(--stdr-z);
+    display: none;
+    gap: 14px;
+    width: var(--stdr-panel-width);
+    max-width: calc(100vw - 24px);
+    padding: 14px;
+    background: #fff;
+    border: 1px solid var(--stdr-border);
+    border-radius: 8px;
+    box-shadow: 0 12px 32px rgba(20, 30, 60, .15);
+    color: var(--stdr-text);
+    font-size: 12.5px;
+    font-weight: normal;
+    line-height: 1.4;
+    text-align: left;
+}
+
+.stdr-panel.stdr-align-right { left: auto; right: 0; }
+.stdr.stdr-open .stdr-panel { display: flex; }
+
+/* presets */
+.stdr-presets {
+    width: 110px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-right: 12px;
+    border-right: 1px solid var(--stdr-border);
+}
+
+.stdr-preset {
+    padding: 7px 8px;
+    border: 0;
+    border-radius: 5px;
+    background: none;
+    color: #4a5262;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.stdr-preset:hover { background: #f1f5fc; }
+
+.stdr-preset.stdr-active {
+    background: var(--stdr-chip-bg);
+    color: var(--stdr-primary-dark);
+    font-weight: 600;
+}
+
+/* calendars */
+.stdr-body { min-width: 0; }
+.stdr-months { display: flex; gap: 16px; }
+.stdr-month { width: 196px; flex-shrink: 0; }
+
+.stdr-month-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.stdr-nav {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: none;
+    color: #5b6472;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.stdr-nav:hover { background: #f1f5fc; }
+.stdr-nav.stdr-hidden { visibility: hidden; }
+
+table.stdr-grid { width: 100%; margin: 0; border-collapse: collapse; }
+
+table.stdr-grid th {
+    padding: 4px 0;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--stdr-muted);
+    text-align: center;
+    border: 0;
+}
+
+table.stdr-grid td { padding: 0; text-align: center; border: 0; }
+
+.stdr-day {
+    width: 28px;
+    height: 28px;
+    margin: 1px auto;
+    line-height: 28px;
+    font-size: 12px;
+    border-radius: 5px;
+    color: var(--stdr-text);
+    cursor: pointer;
+}
+
+.stdr-day:hover { background: var(--stdr-hover-bg); }
+.stdr-day.stdr-out { color: #cfd5e0; }
+.stdr-day.stdr-today { font-weight: 700; box-shadow: inset 0 0 0 1px var(--stdr-border); }
+
+.stdr-day.stdr-inrange,
+.stdr-day.stdr-preview { background: var(--stdr-range-bg); border-radius: 0; box-shadow: none; }
+
+.stdr-day.stdr-selected {
+    background: var(--stdr-primary);
+    color: #fff;
+    font-weight: 700;
+    box-shadow: none;
+}
+
+.stdr-day.stdr-start { border-radius: 5px 0 0 5px; }
+.stdr-day.stdr-end { border-radius: 0 5px 5px 0; }
+.stdr-day.stdr-start.stdr-end { border-radius: 5px; }
+
+/* นอกช่วงที่เลือกได้ */
+.stdr-day.stdr-disabled,
+.stdr-day.stdr-disabled:hover {
+    background: none;
+    color: #d5dae2;
+    text-decoration: line-through;
+    cursor: not-allowed;
+}
+
+/* typed from / to */
+.stdr-manual {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    color: #4a5262;
+}
+
+.stdr .stdr-type {
+    width: 110px;
+    padding: 4px 8px;
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+
+.stdr .stdr-type:not(.form-control) { border: 1px solid #ced4da; border-radius: .375rem; }
+
+.stdr .stdr-type.is-invalid {
+    border-color: var(--stdr-danger);
+    padding-right: 8px;
+    background-image: none;
+}
+
+.stdr-note { margin-top: 4px; font-size: 11px; color: #999; }
+.stdr-error { margin-top: 6px; font-size: 11.5px; color: var(--stdr-danger); }
+.stdr-note:empty, .stdr-error:empty { display: none; }
+
+.stdr-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.stdr .stdr-btn { padding: 6px 14px; font-size: 12.5px; }
+
+.stdr .stdr-btn:not(.btn) {
+    border: 1px solid var(--stdr-border);
+    border-radius: 5px;
+    background: #fff;
+    color: var(--stdr-text);
+    cursor: pointer;
+}
+
+.stdr .stdr-apply:not(.btn) {
+    background: var(--stdr-primary);
+    border-color: var(--stdr-primary);
+    color: #fff;
+}
+
+/* ---------- จอเล็ก: presets อยู่ด้านบน, ปฏิทินเรียงลง ---------- */
+@media (max-width: 640px) {
+    .stdr.stdr-open .stdr-panel { flex-direction: column; }
+
+    .stdr-presets {
+        width: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 0 0 8px;
+        border-right: 0;
+        border-bottom: 1px solid var(--stdr-border);
+    }
+
+    .stdr-months { flex-direction: column; }
+}

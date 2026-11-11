@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>STDateRange demo</title>
+    <!-- Bootstrap ไม่บังคับ: ถ้าโหลดไม่เจอ library จะใช้หน้าตาพื้นฐานของตัวเอง -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="st-daterange.css" />
+    <style>
+        body { padding: 24px; background: #f5f7fa; font-family: system-ui, "Segoe UI", Tahoma, sans-serif; }
+        .card-demo { background: #fff; border: 1px solid #e2e6ec; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+        .row-demo { display: flex; flex-wrap: wrap; gap: 16px; }
+        .row-demo > div { flex: 1 1 260px; min-width: 0; }
+        @media (max-width: 640px) { body { padding: 12px; } }
+        pre { background: #f1f3f6; padding: 8px 12px; border-radius: 6px; font-size: 12px; margin: 8px 0 0; min-height: 34px; }
+        label { font-weight: 700; margin-bottom: 4px; display: block; }
+    </style>
+</head>
+<body>
+    <h3 class="fw-bold mb-3">STDateRange demo</h3>
+
+    <div class="card-demo">
+        <div class="row-demo">
+            <div>
+                <label>1) แบบ PickProfileReport (ย้อนหลัง 90 วัน, ช่วงไม่เกิน 90 วัน)</label>
+                <div id="dr1"></div>
+                <pre id="log1"></pre>
+            </div>
+            <div>
+                <label>2) ไม่จำกัดวัน, preset ชุดอื่น, เริ่มที่เดือนนี้</label>
+                <div id="dr2"></div>
+                <pre id="log2"></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-demo">
+        <div class="row-demo">
+            <div>
+                <label>3) ปฏิทิน 1 เดือน, ไม่มี preset, สัปดาห์เริ่มวันจันทร์, ห้ามเกิน 7 วัน</label>
+                <div id="dr3"></div>
+            </div>
+            <div>
+                <label>4) อยู่ใน &lt;form&gt; ส่ง FromDate / ToDate ไปกับ form ได้เลย</label>
+                <form id="demoForm" onsubmit="event.preventDefault(); document.getElementById('log4').textContent = new URLSearchParams(new FormData(this)).toString();">
+                    <div id="dr4"></div>
+                    <button class="btn btn-primary mt-2" type="submit">Submit</button>
+                </form>
+                <pre id="log4"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script src="st-daterange.js"></script>
+    <script>
+        const log = (id, p) => document.getElementById(id).textContent = JSON.stringify(p.getISO()) + '  (' + p.getDayCount() + ' วัน)';
+
+        // 1) เหมือน PickProfileReport
+        const dr1 = new STDateRange('#dr1', {
+            inputClass: 'form-control form-control-lg',
+            minDate: -89,
+            maxDate: 0,
+            maxRangeDays: 90,
+            onApply: (from, to, picker) => log('log1', picker)
+        });
+        log('log1', dr1);
+
+        // 2) preset ชุดอื่น + preset เขียนเอง
+        const dr2 = new STDateRange('#dr2', {
+            startDate: () => { const t = STDateRange.utils.today(); return new Date(t.getFullYear(), t.getMonth(), 1); },
+            endDate: 0,
+            presets: [
+                'today',
+                { key: 'last7Days', label: '7 วันล่าสุด' },
+                'thisMonth',
+                'lastMonth',
+                { label: 'ปีนี้', range: t => [new Date(t.getFullYear(), 0, 1), t] }
+            ]
+        });
+        dr2.el.addEventListener('stdr:apply', e => log('log2', e.detail.picker));
+        log('log2', dr2);
+
+        // 3) 1 เดือน ไม่มี preset
+        new STDateRange('#dr3', { calendars: 1, presets: false, weekStart: 1, maxRangeDays: 7, startDate: -6, endDate: 0 });
+
+        // 4) ใน form
+        new STDateRange('#dr4', { fromName: 'FromDate', toName: 'ToDate', maxDate: 0 });
+    </script>
+</body>
+</html>
